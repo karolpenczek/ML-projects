@@ -102,28 +102,8 @@ def test():
     
     return total_loss / len(test_loader)
 
-for epoch in range(100):
+for epoch in range(300):
     loss = train()
     tloss = test()
     if epoch % 10 == 0:
         print(f'Epoch {epoch:>2} | Loss: {loss:.4f} | Tloss: {tloss:.4f}')
-
-@torch.no_grad()
-def visualize_reconstruction():
-    model.eval()
-    images, _ = next(iter(test_loader))  # Get a batch of test images
-    images = images.to(device)
-
-    reconstructed = model(images).cpu()  # Get reconstructed images
-
-    fig, axes = plt.subplots(2, 10, figsize=(10, 2))
-    for i in range(10):  # Show 10 images
-        axes[0, i].imshow(images[i].squeeze(), cmap='gray')  # Original
-        axes[1, i].imshow(reconstructed[i].squeeze(), cmap='gray')  # Reconstructed
-        axes[0, i].axis('off')
-        axes[1, i].axis('off')
-
-    plt.show()
-
-# Call this after some epochs to visualize
-visualize_reconstruction()
